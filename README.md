@@ -27,7 +27,7 @@ Within your Scala.js application, you can initialize the Facebook SDK:
 ```scala
 import com.github.ldaniels528.scalascript.social.facebook.Facebook.FB
 
-val config = FacebookAppConfig(appId = "[Your App ID goes here]", status = true, xfbml = true, version = "v2.5")
+val config = FacebookAppConfig(appId = '[Your App ID goes here]', status = true, xfbml = true, version = "v2.5")
 FB.init(config)
 ```
 
