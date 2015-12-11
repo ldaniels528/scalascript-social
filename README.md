@@ -27,7 +27,7 @@ Within your Scala.js application, you can initialize the Facebook SDK:
 ```scala
 import com.github.ldaniels528.scalascript.social.facebook.Facebook.FB
 
-val config = FacebookAppConfig(appId = "[Your App ID goes here]", status = true, xfbml = true, version = "v2.5")
+val config = FacebookAppConfig(appId = "[YOUR_APP_KEY_GOES_HERE]", status = true, xfbml = true, version = "v2.5")
 FB.init(config)
 ```
 
@@ -104,7 +104,7 @@ Inside of your HTML index page:
 
 ```html
 <script type="text/javascript" src="//platform.linkedin.com/in.js">
-    api_key: [YOUR_KEY_GOES_HERE]
+    api_key: [YOUR_API_KEY_GOES_HERE]
     authorize: true
     onLoad: linkedInInit
     scope: r_basicprofile r_emailaddress rw_company_admin w_share
