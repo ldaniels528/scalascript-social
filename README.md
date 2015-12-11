@@ -25,7 +25,9 @@ Inside of your HTML index page:
 Within your Scala.js application, you can initialize the Facebook SDK:
 
 ```scala
-val config = FacebookAppConfig(appId = getFacebookAppID(g.location.hostname.as[String]), status = true, xfbml = true)
+import com.github.ldaniels528.scalascript.social.facebook.Facebook.FB
+
+val config = FacebookAppConfig(appId = "[Your App ID goes here]", status = true, xfbml = true, version = "v2.5")
 FB.init(config)
 ```
 
@@ -40,6 +42,7 @@ Finally, within your AngularJS controller or service you invoke the Facebook log
 ```scala    
 class SocialController($scope: SocialControllerScope, @injected("Facebook") facebook: FacebookService) extends Controller {
     private var facebookID: js.UndefOr[String] = js.undefined
+    private var fbFriends: js.UndefOr[js.Array[TaggableFriend]] = js.undefined
     
     $scope.loginToFacebook = () => {
         facebook.login() onComplete {
@@ -81,6 +84,18 @@ outcome onComplete {
     toaster.error(s"Failed to retrieve Facebook profile and friends - ${e.getMessage}")
 }
 ()
+```
+
+If you're not using AngularJS, you can use the Facebook SDK directly:
+
+```scala
+FB.login((response: js.UndefOr[FacebookLoginStatusResponse]) =>
+  response.toOption match {
+    case Some(resp) if resp.error.isEmpty =>
+        console.log(s"auth = ${angular.toJson(auth)}")
+    case Some(resp) => deferred.reject(resp.error)
+    case None => deferred.reject("No response from Facebook")
+  })     
 ```
 
 ## Sample Code for LinkedIn
