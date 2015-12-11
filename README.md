@@ -93,8 +93,8 @@ FB.login((response: js.UndefOr[FacebookLoginStatusResponse]) =>
   response.toOption match {
     case Some(resp) if resp.error.isEmpty =>
         console.log(s"auth = ${angular.toJson(auth)}")
-    case Some(resp) => deferred.reject(resp.error)
-    case None => deferred.reject("No response from Facebook")
+    case Some(resp) => console.error(s"Error logging in to Facebook: ${resp.error}")
+    case None => console.error("No response from Facebook servers")
   })     
 ```
 
