@@ -8,32 +8,60 @@ but others will follow (including Google Plus and Twitter)
 
 ## Sample Code for Facebook
 
-Within your AngularJS Scala.js application, you define the Facebook service.
+Inside of your HTML index page:
 
-```scala
-module.serviceOf[Facebook]("Facebook")
+```javascript
+<script>
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 ```
 
-Within your Scala.js application, you can call the Facebook login
+Within your Scala.js application, you can initialize the Facebook SDK:
 
 ```scala
-var facebookID: js.UndefOr[String] = js.undefined
+val config = FacebookAppConfig(appId = getFacebookAppID(g.location.hostname.as[String]), status = true, xfbml = true)
+FB.init(config)
+```
 
-def loginToFacebook() {
-    facebook.login() onComplete {
-      case Success(response) =>
-        facebookID = response.authResponse.userID
+Assuming you're using AngularJS, within your Scala.js application, you define the AngularJS Facebook service:
 
-        // retrieve the taggle friends
-        facebook.getTaggableFriends onComplete {
-          case Success(friends) => fbFriends = friends
+```scala
+module.serviceOf[FacebookService]("Facebook")
+```
+      
+Finally, within your AngularJS controller or service you invoke the Facebook login: 
+  
+```scala    
+class SocialController($scope: SocialControllerScope, @injected("Facebook") facebook: FacebookService) extends Controller {
+    private var facebookID: js.UndefOr[String] = js.undefined
+    
+    $scope.loginToFacebook = () => {
+        facebook.login() onComplete {
+          case Success(response) =>
+            facebookID = response.authResponse.userID
+    
+            // retrieve the taggle friends
+            facebook.getTaggableFriends onComplete {
+              case Success(friends) => fbFriends = friends
+              case Failure(e) =>
+                console.error(s"Facebook friends retrieval failed: ${e.displayMessage}")
+            }
           case Failure(e) =>
-            console.error(s"Facebook friends retrieval failed: ${e.displayMessage}")
+            toaster.error("Facebook Login Error", e.displayMessage)
         }
-      case Failure(e) =>
-        toaster.error("Facebook Login Error", e.displayMessage)
-    }
-  }
+    }   
+}
+
+@js.native
+trait SocialControllerScope extends Scope {
+    var loginToFacebook: js.Function0[Unit] = js.native
+}
 ```
 
 Afterwards, you may call any Facebook API that you have the permissions to execute:
@@ -57,7 +85,7 @@ outcome onComplete {
 
 ## Sample Code for LinkedIn
 
-Inside of your HTML page:
+Inside of your HTML index page:
 
 ```html
 <script type="text/javascript" src="//platform.linkedin.com/in.js">
