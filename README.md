@@ -37,24 +37,18 @@ Assuming you're using AngularJS, within your Scala.js application, you define th
 module.serviceOf[FacebookService]("Facebook")
 ```
       
-Finally, within your AngularJS controller or service you invoke the Facebook login: 
+Finally, within your AngularJS controller or service you invoke the Facebook login:   
   
 ```scala    
+import com.github.ldaniels528.scalascript.util.ScalaJsHelper._
+
 class SocialController($scope: SocialControllerScope, @injected("Facebook") facebook: FacebookService) extends Controller {
     private var facebookID: js.UndefOr[String] = js.undefined
-    private var fbFriends: js.UndefOr[js.Array[TaggableFriend]] = js.undefined
-    
+
     $scope.loginToFacebook = () => {
         facebook.login() onComplete {
           case Success(response) =>
             facebookID = response.authResponse.userID
-    
-            // retrieve the taggle friends
-            facebook.getTaggableFriends onComplete {
-              case Success(friends) => fbFriends = friends
-              case Failure(e) =>
-                console.error(s"Facebook friends retrieval failed: ${e.displayMessage}")
-            }
           case Failure(e) =>
             toaster.error("Facebook Login Error", e.displayMessage)
         }
@@ -70,6 +64,8 @@ trait SocialControllerScope extends Scope {
 Afterwards, you may call any Facebook API that you have the permissions to execute:
 
 ```scala
+import com.github.ldaniels528.scalascript.util.ScalaJsHelper._
+
 val outcome = for {
   // load the user"s Facebook profile
   fbProfile <- facebook.getUserProfile
@@ -81,7 +77,7 @@ outcome onComplete {
     console.log("fbProfile = ${angular.toJson(fbProfile, pretty = true)}")
     console.log(s"fbFriends = ${angular.toJson(fbFriends, pretty = true)}")
   case Failure(e) =>
-    toaster.error(s"Failed to retrieve Facebook profile and friends - ${e.getMessage}")
+    toaster.error(s"Failed to retrieve Facebook profile and friends - ${e.displayMessage}")
 }
 ()
 ```
