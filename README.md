@@ -6,6 +6,22 @@ Type-safe Scala.js Bindings for Social Networks (including Facebook and LinkedIn
 ScalaScript-Social is a type-safe Scala.js binding for Social Networks; currently limited to Facebook and LinkedIn, 
 but others will follow (including Google Plus and Twitter)
 
+<a name="development"></a>
+## Development
+
+<a name="build-requirements"></a>
+### Build Requirements
+
+* [Java SDK 1.7] (http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)
+* [Scala 2.11.x] (http://scala-lang.org/download/)
+* [SBT 0.13+] (http://www.scala-sbt.org/download.html)
+
+### Building and installation
+
+```
+~\> sbt clean publish-local
+```
+
 ## Sample Code for Facebook
 
 Inside of your HTML index page:
