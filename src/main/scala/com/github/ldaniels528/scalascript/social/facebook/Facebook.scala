@@ -13,11 +13,11 @@ trait Facebook extends js.Object {
 
   def api(url: String, params: js.Object): Unit = js.native
 
-  def getLoginStatus(callback: js.Function1[js.UndefOr[FacebookLoginStatusResponse], Any], loginOptions: js.UndefOr[FacebookLoginOptions] = js.undefined): Unit = js.native
+  def getLoginStatus(callback: js.Function1[js.UndefOr[FacebookLoginStatusResponse], Any]): Unit = js.native
 
   def init(config: FacebookAppConfig): Unit = js.native
 
-  def login(callback: js.Function1[js.UndefOr[FacebookLoginStatusResponse], Any]): Unit = js.native
+  def login(callback: js.Function1[js.UndefOr[FacebookLoginStatusResponse], Any], loginOptions: js.UndefOr[FacebookLoginOptions] = js.undefined): Unit = js.native
 
   def logout(callback: js.Function1[js.UndefOr[FacebookLoginStatusResponse], Any]): Unit = js.native
 
